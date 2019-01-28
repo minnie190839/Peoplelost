@@ -28,9 +28,9 @@ class Feedback{
      $stmt = $this->connection->prepare($query);
 
      // sanitize
-     $this->feedback_id=htmlspecialchars(strip_tags($this->feedback_id));
+    $this->feedback_id=htmlspecialchars(strip_tags($this->feedback_id));
     $this->guest_id=htmlspecialchars(strip_tags($this->guest_id));
-     $this->id=htmlspecialchars(strip_tags($this->id));
+    $this->id=htmlspecialchars(strip_tags($this->id));
 
      // bind values
      $stmt->bindParam(":feedback_id", $this->feedback_id);

@@ -18,12 +18,23 @@ $db = $database->getConnection();
 // initialize object
 $missing = new MissingPersons($db);
 
+
+$data = json_decode(file_get_contents("php://input"));
 // get keywords
-$keywords=isset($_GET["s"]) ? $_GET["s"] : "";
+//$keywords=isset($_POST["s"]) ? $_POST["s"] : "";
+
+$missing->fname = $data->fname;
+$missing->lname = $data->lname;
+$missing->city = $data->city;
+//$missing->type = $data->type;
+
+//$missing->missing_person = $data->fname.''.$data->lname;
+
 
 // query products
-$stmt = $missing->search($keywords);
+$stmt = $missing->search();
 $num = $stmt-> rowCount();
+
 
 // check if more than 0 record found
 if($num>0){
@@ -44,8 +55,8 @@ if($num>0){
         $missing_item = array(
             "fname"=> $fname,
             "lname"=> $lname,
-            "detail"=> $detail
-
+            "detail"=> $detail,
+            "reg_date"=> $reg_date
 
         );
 

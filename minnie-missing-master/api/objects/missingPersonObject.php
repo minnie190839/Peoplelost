@@ -223,13 +223,13 @@ class MissingPersons{
       }
 
       // search products
-function search($keywords){
+function search(){
 
     // select all query
     $query = "SELECT fname,lname,detail,reg_date FROM
                  . $this->table_name
             WHERE
-                fname LIKE ? OR lname LIKE ? OR detail LIKE ?
+                fname LIKE :fname OR lname LIKE :lname OR city LIKE :city 
             ORDER BY
                 reg_date DESC";
 
@@ -237,17 +237,32 @@ function search($keywords){
     $stmt = $this->connection->prepare($query);
 
     // sanitize
-    $keywords=htmlspecialchars(strip_tags($keywords));
-    $keywords = "%{$keywords}%";
+    $this->fname=htmlspecialchars(strip_tags($this->fname));
+    $this->lname=htmlspecialchars(strip_tags($this->lname));
+    $this->city=htmlspecialchars(strip_tags($this->city));
+    //$this->type=htmlspecialchars(strip_tags($this->type));
+    //$this->missing_person=htmlspecialchars(strip_tags($this->missing_person));
 
+    $this->fname = "%{$this->fname}%";
+    $this->lname = "%{$this->lname}%";
+    $this->fname = "%{$this->city}%";
+    //$this->lname = "%{$this->type}%";
+    //$this->missing_person = "%{$this->missing_person}%";
     // bind
-    $stmt->bindParam(1, $keywords);
-    $stmt->bindParam(2, $keywords);
-    $stmt->bindParam(3, $keywords);
+
+    $stmt->bindParam(":fname", $this->fname);
+    $stmt->bindParam(":lname", $this->lname);
+    $stmt->bindParam(":city", $this->city);
+   //$stmt->bindParam(":type", $this->type);
+   //$stmt->bindParam(":missing_person", $this->missing_person);
+    //$stmt->bindParam(1, $keywords);
+    //$stmt->bindParam(2, $keywords);
+    //$stmt->bindParam(3, $keywords);
 
     $stmt->execute();
 
     return $stmt;
+
   }
 
   function read_one($keywords){
